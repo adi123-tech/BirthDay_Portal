@@ -13,6 +13,7 @@ route.use(middleware);
 route.get("/middleware");
 
 const users = require("./mongodb/users");
+const birthdates = require("./mongodb/birthdates");
 
 app.post("/signup", async (req, res) => {
   const data = await users.find({ Email: req.body.Email });
@@ -30,7 +31,7 @@ app.post("/signup", async (req, res) => {
     };
     JWT.sign({ newuser }, secretkey, { expiresIn: "1h" }, (err, token) => {
       if (err) {
-        res.status(404).send({msg:"Invalid token generated"});
+        res.status(404).send({ msg: "Invalid token generated" });
       } else {
         res.send({ user: newuser, auth: token });
       }
@@ -52,22 +53,31 @@ app.post("/login", async (req, res) => {
     if (data[0]["Password"] === req.body.Password) {
       JWT.sign({ loggeduser }, secretkey, { expiresIn: "1h" }, (err, token) => {
         if (err) {
-          res.status(404).send({msg:"Invalid token generated"});
+          res.status(404).send({ msg: "Invalid token generated" });
         } else {
           res.json({ user: loggeduser, auth: token });
         }
       });
     } else {
-      res.status(404).send({msg:"Password Not Match"});
+      res.status(404).send({ msg: "Password Not Match" });
     }
   } else {
-    res.status(404).send({msg:"User N0t found"});
+    res.status(404).send({ msg: "User N0t found" });
   }
 });
 
+route.get("/datares", async (req, res) => {
+  res.json({ msg: "success" });
+});
 
-route.get('/datares',async(req,res)=>{
-  res.json({msg : "success"});
+route.post("/adduserbirthdayinfo", async (req, res) => {
+  await birthdates.create(req.body);
+  res.send({ msg: "Successfully saved birthday info" });
+});
+
+route.get("/getbirthdayinfo",async(req,res)=>{
+  const data= await birthdates.find();
+  res.send(data);
 })
 
 app.use("/", route);

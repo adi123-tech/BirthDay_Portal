@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Alert from "@mui/material/Alert";
+import React, { useState } from "react";
 import dayjs from "dayjs";
+import AlertVal from "./AlertVal";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -30,22 +30,28 @@ function Add() {
     }, 5000);
   }
 
-  //   useEffect();
-
-    async function submit() {
-      if (firstName && lastName && date) {
-        const data = await fetch("http://localhost:5000/signup", {
-          method: "post",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            Firstname: firstName,
-            Lastname: lastName,
-          }),
-        });
-      } else {
-        setShow(true);
+  async function submit() {
+    if (firstName && lastName && date) {
+      const formattedDate = dayjs(date).format("DD-MM-YYYY");
+      const data = await fetch("http://localhost:5000/adduserbirthdayinfo", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+          authorization: `bearer ${localStorage.getItem("auth")}`,
+        },
+        body: JSON.stringify({
+          Firstname: firstName,
+          Lastname: lastName,
+          Birthdate: formattedDate,
+        }),
+      });
+      if (data.ok) {
+        window.location.reload();
       }
+    } else {
+      setShow(true);
     }
+  }
 
   return (
     <MDBContainer fluid className="p-4">
@@ -107,12 +113,12 @@ function Add() {
                   />
                 </DemoContainer>
               </LocalizationProvider>
-              <br/>
+              <br />
               <MDBBtn
                 className="w-100 mb-4"
                 size="md"
                 onClick={() => {
-                   submit();
+                  submit();
                 }}
               >
                 sign up
@@ -121,36 +127,8 @@ function Add() {
           </MDBCard>
         </MDBCol>
       </MDBRow>
-      {show ? (
-        <Alert
-          variant="outlined"
-          severity="warning"
-          sx={{
-            width: "20%",
-            position: "absolute",
-            top: "70px",
-            right: "20px",
-            transition: "all 0.5s ease-in-out",
-          }}
-        >
-          Please Fill out the Empty fields
-        </Alert>
-      ) : null}
-      {msg ? (
-        <Alert
-          variant="outlined"
-          severity="warning"
-          sx={{
-            width: "20%",
-            position: "absolute",
-            top: "70px",
-            right: "20px",
-            transition: "all 0.5s ease-in-out",
-          }}
-        >
-          {msg}
-        </Alert>
-      ) : null}
+      {show ? <AlertVal msg="Please Fill out the Empty fields" /> : null}
+      {msg ? <AlertVal msg={msg} /> : null}
     </MDBContainer>
   );
 }

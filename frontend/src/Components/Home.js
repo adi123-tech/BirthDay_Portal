@@ -1,45 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 function Home() {
-  useEffect(()=>{
+  const [user, setUser] = useState([]);
+  const today = dayjs().format("DD-MM-YYYY");
+  useEffect(() => {
     data();
-  })
+  });
   async function data() {
-    let sample = await fetch("http://localhost:5000/datares", {
+    let sample = await fetch("http://localhost:5000/getbirthdayinfo", {
       headers: { authorization: `bearer ${localStorage.getItem("auth")}` },
     });
-    if(sample.ok)
-    {
+    if (sample.ok) {
       let da = await sample.json();
-      console.log(da);
+      setUser(da);
     }
   }
-  const user = [
-    {
-      name: "aditya dhonde",
-      age: 5,
-    },
-    {
-      name: "aditya dhonde",
-      age: 5,
-    },
-    {
-      name: "aditya dhonde",
-      age: 5,
-    },
-    {
-      name: "aditya dhonde",
-      age: 5,
-    },
-  ];
 
   return (
     <div className="grid-container">
       {user.map((item, index) => (
-        <div className="card" key={index}>
+        <div
+          className="card"
+          key={index}
+          style={{
+            backgroundColor: item.Birthdate === today ? "black" : "white",
+          }}
+        >
           <img src="/logo192.png" alt="profilepic" />
-          <h1>{item.name}</h1>
-          <h2>{item.age}</h2>
+          <h1>
+            {item.Firstname} {item.Lastname}
+          </h1>
+          <h2>{item.Birthdate}</h2>
         </div>
       ))}
     </div>
