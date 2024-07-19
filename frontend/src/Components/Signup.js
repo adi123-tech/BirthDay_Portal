@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Alert from "@mui/material/Alert";
+import AlertVal from "./AlertVal";
 import {
   MDBBtn,
   MDBContainer,
@@ -18,7 +18,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const [msg,setMsg] = useState("");
+  const [msg, setMsg] = useState("");
 
   const navigate = useNavigate();
   const auth = localStorage.getItem("user");
@@ -47,13 +47,11 @@ function Signup() {
           Password: password,
         }),
       });
-      
-      if(data.ok)
-      {
-        localStorage.setItem('user','loggedin');
-        navigate('/');
-      }
-      else{
+
+      if (data.ok) {
+        localStorage.setItem("user", "loggedin");
+        navigate("/");
+      } else {
         const res = await data.json();
         setMsg(res.msg);
       }
@@ -187,35 +185,9 @@ function Signup() {
           </MDBCard>
         </MDBCol>
       </MDBRow>
-      {show ? (
-        <Alert
-          variant="outlined"
-          severity="warning"
-          sx={{
-            width: "20%",
-            position: "absolute",
-            top: "70px",
-            right: "20px",
-            transition: "all 0.5s ease-in-out",
-          }}
-        >
-          Please Fill out the Empty fields
-        </Alert>
-      ) : null}
+      {show ? <AlertVal msg="Please Fill out the Empty fields" /> : null}
       {msg ? (
-        <Alert
-          variant="outlined"
-          severity="warning"
-          sx={{
-            width: "20%",
-            position: "absolute",
-            top: "70px",
-            right: "20px",
-            transition: "all 0.5s ease-in-out",
-          }}
-        >
-          {msg}
-        </Alert>
+        <AlertVal msg={msg}/>
       ) : null}
     </MDBContainer>
   );

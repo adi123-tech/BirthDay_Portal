@@ -6,6 +6,7 @@ import Signup from "./Components/Signup";
 import Login from "./Components/Login";
 import NotFound404 from "./Components/NotFound404";
 import PrivateRoute from "./Components/PrivateRoute";
+import Add from "./Components/Add";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route element={<PrivateRoute />}>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/adduser" element={<Add />} />
         </Route>
 
         <Route exact path="/signup" element={<Signup />} />

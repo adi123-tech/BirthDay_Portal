@@ -19,14 +19,19 @@ export default function NavbarComp() {
 
   function clear() {
     localStorage.clear();
-    navigate('/login');
+    navigate("/login");
   }
 
   return (
     <>
       <MDBNavbar expand="lg" dark bgColor="primary">
         <MDBContainer fluid>
-          <MDBNavbarBrand href="/">Navbar</MDBNavbarBrand>
+          <MDBNavbarBrand
+            href="/"
+            style={{ fontWeight: "bolder", fontSize: "2em" }}
+          >
+            BirthDay Portal
+          </MDBNavbarBrand>
           <MDBNavbarToggler
             type="button"
             data-target="#navbarColor02"
@@ -40,12 +45,28 @@ export default function NavbarComp() {
           <MDBCollapse open={openNavColor} navbar>
             <MDBNavbarNav className="me-auto mb-2 mb-lg-0">
               {auth && (
-                <MDBNavbarItem className="active">
-                  <Link to="/" style={{ color: "white" }} className="nav-link">
-                    Home
-                  </Link>
-                </MDBNavbarItem>
+                <>
+                  <MDBNavbarItem className="active">
+                    <Link
+                      to="/"
+                      style={{ color: "white" }}
+                      className="nav-link"
+                    >
+                      Home
+                    </Link>
+                  </MDBNavbarItem>
+                  <MDBNavbarItem className="active">
+                    <Link
+                      to="/adduser"
+                      style={{ color: "white" }}
+                      className="nav-link"
+                    >
+                      Add Birthday
+                    </Link>
+                  </MDBNavbarItem>
+                </>
               )}
+
               {!auth && (
                 <MDBNavbarItem>
                   <Link
@@ -71,7 +92,10 @@ export default function NavbarComp() {
               {auth && (
                 <MDBNavbarItem>
                   <div
-                    style={{ color: "white",cursor:"pointer" }}
+                    style={{
+                      color: "white",
+                      cursor: "pointer",
+                    }}
                     className="nav-link"
                     onClick={clear}
                   >

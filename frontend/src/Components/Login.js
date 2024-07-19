@@ -8,8 +8,8 @@ import {
   MDBCheckbox,
   MDBIcon,
 } from "mdb-react-ui-kit";
-import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import AlertVal from "./AlertVal";
 
 function Login() {
   const navigate = useNavigate();
@@ -32,15 +32,16 @@ function Login() {
   }
 
   async function submit() {
-    console.log(email + password)
     if (email && password) {
       const res = await fetch("http://localhost:5000/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json"},
         body: JSON.stringify({ Email: email, Password: password }),
       });
+      const data = await res.json();
       if (res.ok) {
-        localStorage.setItem('user','loggedin')
+        localStorage.setItem("user",data.user.Email);
+        localStorage.setItem("auth",data.auth);
         navigate("/");
       } else {
         setErr(true);
@@ -129,34 +130,10 @@ function Login() {
         </MDBCol>
       </MDBRow>
       {show ? (
-        <Alert
-          variant="outlined"
-          severity="warning"
-          sx={{
-            width: "20%",
-            position: "absolute",
-            top: "70px",
-            right: "20px",
-            transition: "all 0.5s ease-in-out",
-          }}
-        >
-          Please Fill out the Empty fields
-        </Alert>
-      ) : null}
+        <AlertVal msg="Please Fill out the Empty fields"/>
+                ) : null}
       {err ? (
-        <Alert
-          variant="outlined"
-          severity="warning"
-          sx={{
-            width: "20%",
-            position: "absolute",
-            top: "70px",
-            right: "20px",
-            transition: "all 0.5s ease-in-out",
-          }}
-        >
-          Credentials are invalid
-        </Alert>
+         <AlertVal msg=" Credentials are invalid"/>
       ) : null}
     </MDBContainer>
   );

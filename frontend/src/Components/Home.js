@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function Home() {
+  useEffect(()=>{
+    data();
+  })
+  async function data() {
+    let sample = await fetch("http://localhost:5000/datares", {
+      headers: { authorization: `bearer ${localStorage.getItem("auth")}` },
+    });
+    if(sample.ok)
+    {
+      let da = await sample.json();
+      console.log(da);
+    }
+  }
   const user = [
     {
       name: "aditya dhonde",
