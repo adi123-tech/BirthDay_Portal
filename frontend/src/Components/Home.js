@@ -13,6 +13,7 @@ function Home() {
     });
     if (sample.ok) {
       let da = await sample.json();
+      da.sort((a, b) => (a.Birthdate === today ? -1 : b.Birthdate === today ? 1 : 0));
       setUser(da);
     }
   }
@@ -24,7 +25,8 @@ function Home() {
           className="card"
           key={index}
           style={{
-            backgroundColor: item.Birthdate === today ? "black" : "white",
+            backgroundColor: item.Birthdate === today ? "#134B70" : "white",
+            color: item.Birthdate === today ? "white" : "black"
           }}
         >
           <img src="/logo192.png" alt="profilepic" />
