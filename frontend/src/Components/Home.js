@@ -1,0 +1,36 @@
+import React from "react";
+
+function Home() {
+  const user = [
+    {
+      name: "aditya dhonde",
+      age: 5,
+    },
+    {
+      name: "aditya dhonde",
+      age: 5,
+    },
+    {
+      name: "aditya dhonde",
+      age: 5,
+    },
+    {
+      name: "aditya dhonde",
+      age: 5,
+    },
+  ];
+
+  return (
+    <div className="grid-container">
+      {user.map((item, index) => (
+        <div className="card" key={index}>
+          <img src="/logo192.png" alt="profilepic" />
+          <h1>{item.name}</h1>
+          <h2>{item.age}</h2>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default Home;
