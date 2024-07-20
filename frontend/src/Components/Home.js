@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { MDBInputGroup, MDBInput, MDBIcon, MDBBtn } from "mdb-react-ui-kit";
+import { useApi } from "../Context";
 
 function Home() {
+  const baseURL = useApi();
   const [user, setUser] = useState([]);
   const [searchquery, setSearchquery] = useState("");
   const today = dayjs().format("DD-MM-YYYY");
@@ -14,7 +16,7 @@ function Home() {
     []
   );
   async function data() {
-    let sample = await fetch("http://localhost:5000/getbirthdayinfo", {
+    let sample = await fetch(`${baseURL}getbirthdayinfo`, {
       headers: { authorization: `bearer ${localStorage.getItem("auth")}` },
     });
     if (sample.ok) {
@@ -33,13 +35,12 @@ function Home() {
       data();
       return;
     }
-    const res = await fetch(`http://localhost:5000/search/${key}`, {
+    const res = await fetch(`${baseURL}search/${key}`, {
       headers: {
         authorization: `bearer ${localStorage.getItem("auth")}`,
       },
     });
     const datas = await res.json();
-    console.log(datas);
     if (datas.length <= 0) {
       setUser(datas);
     } else {

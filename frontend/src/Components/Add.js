@@ -5,7 +5,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
+import { useApi } from "../Context";
+import { useNavigate } from "react-router-dom";
 import {
   MDBBtn,
   MDBContainer,
@@ -17,11 +18,13 @@ import {
 } from "mdb-react-ui-kit";
 
 function Add() {
+  const baseURL = useApi();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [date, setDate] = useState(dayjs("2000-01-20"));
   const [show, setShow] = useState(false);
   const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
 
   if (show || msg) {
     setTimeout(() => {
@@ -33,7 +36,7 @@ function Add() {
   async function submit() {
     if (firstName && lastName && date) {
       const formattedDate = dayjs(date).format("DD-MM-YYYY");
-      const data = await fetch("http://localhost:5000/adduserbirthdayinfo", {
+      const data = await fetch(`${baseURL}adduserbirthdayinfo`, {
         method: "post",
         headers: {
           "content-type": "application/json",
@@ -46,7 +49,7 @@ function Add() {
         }),
       });
       if (data.ok) {
-        window.location.reload();
+        navigate("/");
       }
     } else {
       setShow(true);
@@ -121,7 +124,7 @@ function Add() {
                   submit();
                 }}
               >
-                sign up
+                Add Birthday Info 
               </MDBBtn>
             </MDBCardBody>
           </MDBCard>

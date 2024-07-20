@@ -1,2 +1,2 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/Birthdayportal");
+mongoose.connect("mongodb+srv://Aditya:mrnobody@cluster0.9ex6qts.mongodb.net/Birthdayportal");

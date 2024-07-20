@@ -1,26 +1,43 @@
-li{
-    list-style-type: none;
+li {
+  list-style-type: none;
 }
 
-
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 20px; 
-    margin: 20px;
-  }
-  
-  .card {
-    border: 1px solid #ccc;
-    padding: 20px;
-    text-align: center;
-    background-color: #f9f9f9;
-    box-shadow: 0px 4px 8px rgba(0, 0, 255, 0.395);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 20px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 8px rgba(0, 0, 255, 0.395);
+}
+
+@media (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* One column */
+    gap: 10px; /* Reduced gap */
+    margin-top: 50px;
   }
 
-  .searchbox-container{
-    position: absolute;
-    top: 20px;
-    right : 20px;
+  .card {
+    padding: 10px; /* Reduced padding */
+    font-size: 0.9em; /* Reduced font size */
   }
-  
+}
+.searchbox-container {
+  position: absolute;
+  top: 20px;
+  right: 220px;
+}
+
+@media (max-width: 600px) {
+  .searchbox-container {
+    top: 75px;
+    left: 0%;
+  }
+}

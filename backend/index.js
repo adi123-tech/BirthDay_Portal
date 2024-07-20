@@ -66,10 +66,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-route.get("/datares", async (req, res) => {
-  res.json({ msg: "success" });
-});
-
 route.post("/adduserbirthdayinfo", async (req, res) => {
   await birthdates.create(req.body);
   res.send({ msg: "Successfully saved birthday info" });

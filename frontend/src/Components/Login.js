@@ -10,8 +10,10 @@ import {
 } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
 import AlertVal from "./AlertVal";
+import { useApi } from "../Context";
 
 function Login() {
+  const baseURL = useApi();
   const navigate = useNavigate();
   const auth = localStorage.getItem("user");
   const [email, setEmail] = useState("");
@@ -33,7 +35,7 @@ function Login() {
 
   async function submit() {
     if (email && password) {
-      const res = await fetch("http://localhost:5000/login", {
+      const res = await fetch(`${baseURL}login`, {
         method: "POST",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify({ Email: email, Password: password }),

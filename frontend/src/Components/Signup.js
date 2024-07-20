@@ -11,8 +11,10 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../Context";
 
 function Signup() {
+  const baseURL = useApi();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,7 +23,7 @@ function Signup() {
   const [msg, setMsg] = useState("");
 
   const navigate = useNavigate();
-  const auth = localStorage.getItem("user");
+  const auth = localStorage.getItem("auth");
   useEffect(() => {
     if (auth) {
       navigate("/");
@@ -37,7 +39,7 @@ function Signup() {
 
   async function submit() {
     if (firstName && lastName && email && password) {
-      const data = await fetch("http://localhost:5000/signup", {
+      const data = await fetch(`${baseURL}signup`, {
         method: "post",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -47,9 +49,10 @@ function Signup() {
           Password: password,
         }),
       });
-
+      const res= await data.json();
       if (data.ok) {
-        localStorage.setItem("user", "loggedin");
+        localStorage.setItem("user",res.user.Email);
+        localStorage.setItem("auth",res.auth);
         navigate("/");
       } else {
         const res = await data.json();
