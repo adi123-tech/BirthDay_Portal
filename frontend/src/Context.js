@@ -1,9 +1,9 @@
 import React, { createContext, useContext } from 'react';
 
-const ApiContext = createContext('http://localhost:5000/');
+const ApiContext = createContext('https://birthday-portal.onrender.com/');
 
 export const ApiProvider = ({ children }) => {
-  const baseUrl = 'http://localhost:5000/';
+  const baseUrl = 'https://birthday-portal.onrender.com/';
 
   return (
     <ApiContext.Provider value={baseUrl}>
