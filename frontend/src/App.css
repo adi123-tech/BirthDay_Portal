@@ -62,6 +62,3 @@ li {
   }
 }
 
-.card:hover {
-  transform: scale(1.05); /* Slightly scale up the item */
-}

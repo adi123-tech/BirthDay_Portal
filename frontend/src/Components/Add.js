@@ -121,7 +121,11 @@ function Add() {
                 className="w-100 mb-4"
                 size="md"
                 onClick={() => {
-                  submit();
+                  if (prompt("Enter Password :") === "6548") {
+                    submit();
+                  } else {
+                    alert("Wrong Password");
+                  }
                 }}
               >
                 Add Birthday Info
