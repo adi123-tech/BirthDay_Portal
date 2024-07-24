@@ -3,11 +3,13 @@ import dayjs from "dayjs";
 import { MDBInputGroup, MDBInput, MDBIcon, MDBBtn } from "mdb-react-ui-kit";
 import { useApi } from "../Context";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { motion } from "framer-motion"; // Import motion
 
 function Home() {
   const baseURL = useApi();
   const [user, setUser] = useState([]);
   const [searchquery, setSearchquery] = useState("");
+  const [hoveredItem, setHoveredItem] = useState(null);
   const today = dayjs().format("DD-MM");
 
   useEffect(
@@ -83,12 +85,18 @@ function Home() {
       {user.map((item, index) => {
         const formattedDate = item.Birthdate.split("-").slice(0, 2).join("-");
         return (
-          <div
-            className="card"
+          <motion.div
+          className={`card ${hoveredItem === index ? "fire" : ""}`}
             key={index}
+            initial={{ x: "-100vw", opacity: 0 }} // Initial position off-screen to the left
+            animate={{ x: 0, opacity: 1 }} // Animate to original position
+            transition={{ duration: 0.5 }} // Animation duration
+            onMouseEnter={() => setHoveredItem(index)}
+            onMouseLeave={() => setHoveredItem(null)}
             style={{
               backgroundColor: formattedDate === today ? "#134B70" : "white",
               color: formattedDate === today ? "white" : "black",
+              position: "relative", // Ensure this is relative for positioning DeleteForeverIcon
             }}
           >
             <img
@@ -113,13 +121,12 @@ function Home() {
               }}
               onClick={() => {
                 const conf = window.confirm("Are you sure you want to delete");
-                if(conf)
-                {
+                if (conf) {
                   deletedata(item._id);
                 }
               }}
-            ></DeleteForeverIcon>
-          </div>
+            />
+          </motion.div>
         );
       })}
     </div>
