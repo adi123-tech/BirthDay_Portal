@@ -90,6 +90,11 @@ route.get("/search/:name", async (req, resp) => {
   }
 });
 
+route.delete("/deletedata/:id", async (req, res) => {
+  await birthdates.deleteOne({ _id: req.params.id });
+  res.send({ msg: "deleted" });
+});
+
 app.use("/", route);
 app.listen(5000, () => {
   console.log("Server running on port 5000");

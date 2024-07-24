@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { MDBInputGroup, MDBInput, MDBIcon, MDBBtn } from "mdb-react-ui-kit";
 import { useApi } from "../Context";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 function Home() {
   const baseURL = useApi();
@@ -51,6 +52,19 @@ function Home() {
     setUser(datas);
   }
 
+  async function deletedata(id) {
+    const res = await fetch(`${baseURL}deletedata/${id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("auth")}`,
+      },
+    });
+
+    if (res.ok) {
+      data();
+    }
+  }
+
   return (
     <div className="grid-container">
       <div className="searchbox-container">
@@ -90,6 +104,21 @@ function Home() {
             {formattedDate === today && (
               <h6 style={{ color: "pink" }}>Today is my birthday</h6>
             )}
+            <DeleteForeverIcon
+              style={{
+                position: "absolute",
+                bottom: "5px",
+                right: "5px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                const conf = window.confirm("Are you sure you want to delete");
+                if(conf)
+                {
+                  deletedata(item._id);
+                }
+              }}
+            ></DeleteForeverIcon>
           </div>
         );
       })}
