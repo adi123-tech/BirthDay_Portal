@@ -4,12 +4,14 @@ import { MDBInputGroup, MDBInput, MDBIcon, MDBBtn } from "mdb-react-ui-kit";
 import { useApi } from "../Context";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { motion } from "framer-motion"; // Import motion
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Home() {
   const baseURL = useApi();
   const [user, setUser] = useState([]);
   const [searchquery, setSearchquery] = useState("");
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [loading, setLoading] = useState(false);
   const today = dayjs().format("DD-MM");
 
   useEffect(
@@ -20,21 +22,27 @@ function Home() {
   );
 
   async function data() {
-    let sample = await fetch(`${baseURL}getbirthdayinfo`, {
-      headers: { authorization: `bearer ${localStorage.getItem("auth")}` },
-    });
-    if (sample.ok) {
-      let da = await sample.json();
-      da.sort((a, b) => {
-        const formattedDateA = a.Birthdate.split("-").slice(0, 2).join("-");
-        const formattedDateB = b.Birthdate.split("-").slice(0, 2).join("-");
-
-        if (formattedDateA === today) return -1;
-        if (formattedDateB === today) return 1;
-        return 0;
+    setLoading(true);
+    try {
+      let sample = await fetch(`${baseURL}getbirthdayinfo`, {
+        headers: { authorization: `bearer ${localStorage.getItem("auth")}` },
       });
+      if (sample.ok) {
+        let da = await sample.json();
+        da.sort((a, b) => {
+          const formattedDateA = a.Birthdate.split("-").slice(0, 2).join("-");
+          const formattedDateB = b.Birthdate.split("-").slice(0, 2).join("-");
 
-      setUser(da);
+          if (formattedDateA === today) return -1;
+          if (formattedDateB === today) return 1;
+          return 0;
+        });
+        setUser(da);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -69,6 +77,14 @@ function Home() {
 
   return (
     <div className="grid-container">
+      {loading ? (
+        <>
+          <CircularProgress
+            size={50}
+            style={{ position: "absolute", top: "50%", left: "50%" }}
+          />
+        </>
+      ) : null}
       <div className="searchbox-container">
         <MDBInputGroup>
           <MDBInput
@@ -86,11 +102,11 @@ function Home() {
         const formattedDate = item.Birthdate.split("-").slice(0, 2).join("-");
         return (
           <motion.div
-          className={`card ${hoveredItem === index ? "fire" : ""}`}
+            className={`card ${hoveredItem === index ? "fire" : ""}`}
             key={index}
-            initial={{ x: "-100vw", opacity: 0 }} // Initial position off-screen to the left
-            animate={{ x: 0, opacity: 1 }} // Animate to original position
-            transition={{ duration: 0.5 }} // Animation duration
+            initial={{ scale: 0.8, opacity: 0 }} // Start smaller and invisible
+            animate={{ scale: 1, opacity: 1 }} // Grow to full size and become visible
+            transition={{ duration: 0.8 }} // Duration of the animation
             onMouseEnter={() => setHoveredItem(index)}
             onMouseLeave={() => setHoveredItem(null)}
             style={{
