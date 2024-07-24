@@ -21,7 +21,7 @@ function Add() {
   const baseURL = useApi();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [date, setDate] = useState(dayjs("2000-01-20"));
+  const [date, setDate] = useState(dayjs());
   const [show, setShow] = useState(false);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
@@ -124,7 +124,7 @@ function Add() {
                   submit();
                 }}
               >
-                Add Birthday Info 
+                Add Birthday Info
               </MDBBtn>
             </MDBCardBody>
           </MDBCard>
